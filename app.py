@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash, abort
 from user_controller import UserController
+from category_controller import CategoryController
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 
 user_controller = UserController()
+category_controller = CategoryController()
 
 @app.route('/')
 def home():
@@ -27,18 +29,16 @@ def login():
         password = request.form['password']
         if user_controller.login_user(username, password):
             flash("Login successful!")
-            return redirect(url_for('profile', username=username))
+            # Redirigir a la página de categorías después del login exitoso
+            return redirect(url_for('categories'))
         else:
             flash("Invalid credentials, try again.")
     return render_template('login.html')
 
-@app.route('/profile/<username>')
-def profile(username):
-    user = user_controller.user_repository.get_user_by_username(username)
-    if user:
-        return render_template('profile.html', user=user)
-    else:
-        abort(404)
+@app.route('/categories')
+def categories():
+    categories = category_controller.get_all_categories()
+    return render_template('categories.html', categories=categories)
 
 @app.route('/api/users', methods=['GET'])
 def get_users():
