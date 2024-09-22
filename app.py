@@ -1,12 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash, abort
-from user_controller import UserController
-from category_controller import CategoryController
+from controllers.user_controller import UserController
+from controllers.category_controller import CategoryController
+from controllers.product_controller import ProductController
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 
 user_controller = UserController()
 category_controller = CategoryController()
+product_controller = ProductController()
 
 @app.route('/')
 def home():
@@ -29,7 +31,6 @@ def login():
         password = request.form['password']
         if user_controller.login_user(username, password):
             flash("Login successful!")
-            # Redirigir a la página de categorías después del login exitoso
             return redirect(url_for('categories'))
         else:
             flash("Invalid credentials, try again.")
@@ -40,47 +41,71 @@ def categories():
     categories = category_controller.get_all_categories()
     return render_template('categories.html', categories=categories)
 
-@app.route('/api/users', methods=['GET'])
-def get_users():
-    users = user_controller.user_repository.get_all_users()
+# Rutas para productos
+@app.route('/products', methods=['GET'])
+def list_products():
+    products = product_controller.get_all_products()
+    return render_template('products.html', products=products)
+
+@app.route('/products/add', methods=['GET', 'POST'])
+def add_product():
+    if request.method == 'POST':
+        name = request.form['name']
+        price = request.form['price']
+        category_id = request.form['category_id']
+        product_controller.add_product(name, price, category_id)
+        flash(f"Product {name} added successfully.")
+        return redirect(url_for('list_products'))
+    categories = category_controller.get_all_categories()
+    return render_template('add_product.html', categories=categories)
+
+@app.route('/products/<int:product_id>/edit', methods=['GET', 'POST'])
+def edit_product(product_id):
+    product = product_controller.get_product_by_id(product_id)
+    if request.method == 'POST':
+        name = request.form['name']
+        price = request.form['price']
+        category_id = request.form['category_id']
+        product_controller.update_product(product_id, name, price, category_id)
+        flash(f"Product {name} updated successfully.")
+        return redirect(url_for('list_products'))
+    categories = category_controller.get_all_categories()
+    return render_template('edit_product.html', product=product, categories=categories)
+
+@app.route('/products/<int:product_id>/delete', methods=['POST'])
+def delete_product(product_id):
+    product_controller.delete_product(product_id)
+    flash("Product deleted successfully.")
+    return redirect(url_for('list_products'))
+
+# API para productos
+@app.route('/api/products', methods=['GET'])
+def api_get_products():
+    products = product_controller.get_all_products()
     return jsonify([{
-        'user_id': user.user_id,
-        'username': user.username
-    } for user in users])
+        'id': product.id,
+        'name': product.name,
+        'price': product.price,
+        'category_id': product.category_id
+    } for product in products])
 
-@app.route('/api/users/<username>', methods=['GET'])
-def get_user(username):
-    user = user_controller.user_repository.get_user_by_username(username)
-    if user:
-        return jsonify({
-            'user_id': user.user_id,
-            'username': user.username
-        })
-    else:
-        abort(404)
-
-@app.route('/api/users', methods=['POST'])
-def add_user():
+@app.route('/api/products', methods=['POST'])
+def api_add_product():
     data = request.json
-    username = data.get('username')
-    password = data.get('password')
-    
-    if not username or not password:
-        abort(400, description="Username and password are required.")
-    
-    user_controller.register_user(username, password)
-    return jsonify({"message": "User registered successfully."}), 201
+    name = data.get('name')
+    price = data.get('price')
+    category_id = data.get('category_id')
 
-@app.route('/api/login', methods=['POST'])
-def api_login():
-    data = request.json
-    username = data.get('username')
-    password = data.get('password')
-    
-    if user_controller.login_user(username, password):
-        return jsonify({"message": "Login successful!"})
-    else:
-        return jsonify({"message": "Invalid credentials."}), 401
+    if not name or not price or not category_id:
+        abort(400, description="Name, price, and category_id are required.")
+
+    product_controller.add_product(name, price, category_id)
+    return jsonify({"message": "Product added successfully."}), 201
+
+@app.route('/categories/<int:category_id>')
+def products(category_id):
+    products = category_controller.get_products_by_category(category_id)
+    return render_template('products.html', products=products)
 
 if __name__ == '__main__':
     app.run(debug=True)

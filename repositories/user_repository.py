@@ -1,5 +1,5 @@
 import sqlite3
-from user import User
+from models.user import User
 
 class UserRepository:
     def __init__(self):
