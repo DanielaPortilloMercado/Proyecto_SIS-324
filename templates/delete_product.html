@@ -1,0 +1,79 @@
+<!-- templates/delete_product.html --> 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Producto</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #dc3545;
+        }
+        .product-details {
+            margin-bottom: 20px;
+        }
+        .product-details p {
+            margin: 5px 0;
+        }
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .actions button, .actions a {
+            margin-left: 10px;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Eliminar Producto</h2>
+        <div class="product-details">
+            <p><strong>Nombre:</strong> {{ product.name }}</p>
+            <p><strong>Precio:</strong> ${{ "%.2f"|format(product.price) }}</p>
+            <p><strong>Categoría:</strong> {{ product.category_name }}</p>
+        </div>
+        <p>¿Estás seguro de que deseas eliminar este producto?</p>
+        <form method="POST">
+            <div class="actions">
+                <a href="{{ url_for('list_products') }}" class="btn-secondary">Cancelar</a>
+                <button type="submit" class="btn-danger">Eliminar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

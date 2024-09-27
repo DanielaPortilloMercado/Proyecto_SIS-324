@@ -1,3 +1,4 @@
+# category_repository.py
 import sqlite3
 from models.category import Category
 
@@ -16,6 +17,17 @@ class CategoryRepository:
                 );
             """)
             connection.commit()
+    
+    def initialize_categories(self):
+        """Inserta categorías predeterminadas si la tabla está vacía."""
+        with sqlite3.connect(self.db_file) as connection:
+            cursor = connection.cursor()
+            cursor.execute("SELECT COUNT(*) FROM categories")
+            count = cursor.fetchone()[0]
+            if count == 0:
+                categories = ['Hombres', 'Mujeres', 'Niños']
+                cursor.executemany("INSERT INTO categories (name) VALUES (?)", [(name,) for name in categories])
+                connection.commit()
 
     def get_all_categories(self):
         """Obtiene todas las categorías."""

@@ -1,3 +1,4 @@
+# product_controller.py
 from repositories.product_repository import ProductRepository
 from models.product import Product
 
@@ -8,7 +9,7 @@ class ProductController:
     def get_all_products(self):
         products = self.product_repository.get_all_products()
         print(products)  # Para verificar el contenido
-        return products  # Asegúrate de que aquí devuelves objetos Product
+        return products
 
     def get_product_by_id(self, product_id):
         return self.product_repository.get_product_by_id(product_id)
@@ -26,3 +27,6 @@ class ProductController:
 
     def search_products(self, query):
         return self.product_repository.search_products(query)
+    
+    def get_products_by_category(self, category_id):
+        return self.product_repository.get_products_by_category(category_id)

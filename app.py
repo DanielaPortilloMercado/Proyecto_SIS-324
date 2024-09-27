@@ -2,8 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify, f
 from controllers.user_controller import UserController
 from controllers.category_controller import CategoryController
 from controllers.product_controller import ProductController
-from repositories.product_repository import ProductRepository  # Asegúrate de importar esto
-from repositories.category_repository import CategoryRepository  # Asegúrate de importar esto
+from repositories.product_repository import ProductRepository
+from repositories.category_repository import CategoryRepository
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
@@ -20,6 +20,7 @@ category_repo = CategoryRepository()
 # Crear las tablas si no existen
 product_repo.create_table()
 category_repo.create_table()
+category_repo.initialize_categories()
 
 # Ruta de inicio
 @app.route('/')
@@ -60,7 +61,11 @@ def categories():
 @app.route('/categories/<int:category_id>/products', methods=['GET'])
 def products_by_category(category_id):
     products = category_controller.get_products_by_category(category_id)
-    return render_template('products.html', products=products)
+    category = next((cat for cat in category_controller.get_all_categories() if cat.id == category_id), None)
+    if not category:
+        flash("Categoría no encontrada.")
+        return redirect(url_for('categories'))
+    return render_template('products.html', products=products, category=category)
 
 # Listar productos
 @app.route('/products', methods=['GET'])
@@ -92,6 +97,9 @@ def add_product():
 @app.route('/products/<int:product_id>/edit', methods=['GET', 'POST'])
 def edit_product(product_id):
     product = product_controller.get_product_by_id(product_id)
+    if not product:
+        flash("Producto no encontrado.")
+        return redirect(url_for('list_products'))
     if request.method == 'POST':
         name = request.form['name']
         price = request.form['price']
@@ -101,14 +109,20 @@ def edit_product(product_id):
         return redirect(url_for('list_products'))
     categories = category_controller.get_all_categories()
     return render_template('edit_product.html', product=product, categories=categories)
-
-# Eliminar un producto
-@app.route('/products/<int:product_id>/delete', methods=['POST'])
+# Ruta para confirmar la eliminación de un producto
+@app.route('/products/<int:product_id>/delete', methods=['GET', 'POST'])
 def delete_product(product_id):
-    product_controller.delete_product(product_id)
-    flash("Product deleted successfully.")
-    return redirect(url_for('list_products'))
-
+    product = product_controller.get_product_by_id(product_id)
+    if not product:
+        flash("Producto no encontrado.")
+        return redirect(url_for('list_products'))
+    
+    if request.method == 'POST':
+        product_controller.delete_product(product_id)
+        flash(f"Producto '{product.name}' eliminado exitosamente.")
+        return redirect(url_for('list_products'))
+    
+    return render_template('delete_product.html', product=product)
 # API: Obtener todos los productos
 @app.route('/api/products', methods=['GET'])
 def api_get_products():

@@ -1,3 +1,4 @@
+# product_repository.py
 import sqlite3
 from models.product import Product
 
@@ -64,11 +65,22 @@ class ProductRepository:
             connection.commit()
 
     def search_products(self, query):
-        """Busca productos por nombre."""
+        """Busca productos por nombre, categoría o precio."""
         with sqlite3.connect(self.db_file) as connection:
             cursor = connection.cursor()
-            cursor.execute("SELECT * FROM products WHERE name LIKE ? OR category_id LIKE ? OR price LIKE ?",
-                           (f'%{query}%', f'%{query}%', f'%{query}%'))
+            cursor.execute("""
+                SELECT * FROM products 
+                WHERE name LIKE ? OR category_id LIKE ? OR price LIKE ?
+            """, (f'%{query}%', f'%{query}%', f'%{query}%'))
+            rows = cursor.fetchall()
+        
+        return [Product(product_id=row[0], name=row[1], price=row[2], category_id=row[3]) for row in rows]
+    
+    def get_products_by_category(self, category_id):
+        """Obtiene todos los productos pertenecientes a una categoría específica."""
+        with sqlite3.connect(self.db_file) as connection:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM products WHERE category_id = ?", (category_id,))
             rows = cursor.fetchall()
         
         return [Product(product_id=row[0], name=row[1], price=row[2], category_id=row[3]) for row in rows]
