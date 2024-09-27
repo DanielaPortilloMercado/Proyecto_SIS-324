@@ -3,16 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories</title>
+    <title>Sportline Store - Categories</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Estilo Personalizado -->
+    <style>
+        body {
+            background-color: #f4f4f4; /* Fondo claro */
+        }
+        .navbar {
+            background-color: #0056b3; /* Color de fondo azul */
+        }
+        .navbar a {
+            color: white; /* Letras blancas para la navegación */
+        }
+        .header-content {
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(to right, #36d1dc, #5b86e5); /* Gradiente de fondo */
+            color: white; /* Texto blanco */
+        }
+        .category-content {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #fff; /* Fondo blanco para el contenedor de categorías */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            margin: 20px;
+        }
+        .footer {
+            background-color: #333; /* Pie de página oscuro */
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .category-item {
+            padding: 15px;
+            margin: 15px 0;
+            background-color: #e9ecef; /* Fondo gris claro */
+            border-radius: 8px; /* Bordes redondeados */
+        }
+        .category-item a {
+            color: #0056b3; /* Color azul para enlaces */
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .category-item a:hover {
+            color: #003366; /* Azul más oscuro al pasar sobre el enlace */
+        }
+    </style>
 </head>
 <body>
-    <h1>Categories</h1>
-    <ul>
-        {% for category in categories %}
-            <li>
-                <a href="{{ url_for('products', category_id=category.id) }}">{{ category.name }}</a>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">Sportline Store</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="header-content">
+        <h1>Categorías</h1>
+        <p>Explora nuestras categorías de ropa deportiva</p>
+    </div>
+
+    <div class="container category-content">
+        <ul class="list-unstyled">
+            {% for category in categories %}
+            <li class="category-item">
+                <a href="{{ url_for('list_products', category_id=category.id) }}">{{ category.name }}</a>
+
             </li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="footer">
+        © 2024 Sportline Store. All rights reserved.
+    </div>
+    <!-- Bootstrap and jQuery scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

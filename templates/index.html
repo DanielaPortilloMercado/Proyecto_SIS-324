@@ -3,11 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Sportline Store - Home</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Estilo Personalizado -->
+    <style>
+        body {
+            background-color: #f4f4f4; /* Fondo claro */
+        }
+        .navbar {
+            background-color: #0056b3; /* Color de fondo azul */
+        }
+        .navbar a {
+            color: white; /* Letras blancas para la navegación */
+        }
+        .header-content {
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(to right, #36d1dc, #5b86e5); /* Gradiente de fondo */
+            color: white; /* Texto blanco */
+        }
+        .footer {
+            background-color: #333; /* Pie de página oscuro */
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Home Page</h1>
-    <a href="{{ url_for('login') }}">Login</a> |
-    <a href="{{ url_for('register') }}">Register</a>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">Sportline Store</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="header-content">
+        <h1>BIENVENIDOS A SPORTLINE</h1>
+        <p>Ropa deportiva para hombre, mujer y niñ@s</p>
+    </div>
+    <!-- Incluir aquí más contenido según sea necesario -->
+    <div class="footer">
+        © 2024 Sportline Store. All rights reserved.
+    </div>
+    <!-- Bootstrap and jQuery scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

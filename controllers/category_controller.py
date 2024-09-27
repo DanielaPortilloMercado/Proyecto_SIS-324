@@ -17,7 +17,6 @@ class CategoryController:
                 {'id': 6, 'name': 'mochilas', 'price': 49.99}]
         }
 
-
     def get_all_categories(self):
         return self.categories
     def get_products_by_category(self, category_id):

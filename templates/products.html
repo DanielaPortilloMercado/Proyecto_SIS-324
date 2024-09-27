@@ -4,18 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Products</h1>
-    <ul>
-        {% for product in products %}
-            <li>
-                {{ product.name }} - ${{ product.price }}
-            </li>
-        {% else %}
-            <li>No products available in this category.</li>
-        {% endfor %}
-    </ul>
-    <a href="{{ url_for('categories') }}">Back to Categories</a>
+    <div class="container mt-5">
+        <h1>Products</h1>
+
+        <!-- Formulario de búsqueda -->
+        <form action="{{ url_for('search_products') }}" method="GET" class="mb-4">
+            <div class="form-group">
+                <input type="text" class="form-control" name="query" placeholder="Search for products" required>
+            </div>
+            <button type="submit" class="btn btn-info">Search</button>
+        </form>
+
+        <!-- Botón para agregar producto -->
+        <a href="{{ url_for('add_product') }}" class="btn btn-primary mb-3">Add Product</a>
+
+        <!-- Lista de productos -->
+        <ul class="list-group">
+            {% for product in products %}
+                <li class="list-group-item">
+                    {{ product.name }} - ${{ product.price }}
+                    <a href="{{ url_for('edit_product', product_id=product.product_id) }}" class="btn btn-warning btn-sm float-right ml-2">Edit</a>
+                    <a href="{{ url_for('delete_product', product_id=product.product_id) }}" class="btn btn-danger btn-sm float-right">Delete</a>
+                </li>
+            {% else %}
+                <li class="list-group-item">No products found matching your search.</li>
+            {% endfor %}
+        </ul>
+
+        <a href="{{ url_for('categories') }}" class="btn btn-secondary mt-3">Back to Categories</a>
+    </div>
 </body>
 </html>

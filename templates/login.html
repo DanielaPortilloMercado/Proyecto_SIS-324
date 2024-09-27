@@ -3,16 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - Sportline Store</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Estilo Personalizado -->
+    <style>
+        body {
+            background-color: #f4f4f4; /* Fondo claro */
+            padding-top: 40px;
+        }
+        .login-container {
+            width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff; /* Fondo blanco para el formulario */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Sombra suave alrededor del formulario */
+            border-radius: 5px; /* Bordes redondeados */
+        }
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+        .login-form label {
+            font-weight: bold;
+        }
+        .login-form input {
+            margin-bottom: 15px; /* Espacio entre los campos */
+            padding: 10px;
+            border: 1px solid #ccc; /* Bordes sutiles */
+            border-radius: 5px; /* Bordes redondeados para los campos de entrada */
+        }
+        .login-form button {
+            background-color: #0056b3; /* Botón azul que coincide con la barra de navegación */
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer; /* Cursor de mano cuando se pasa el ratón */
+        }
+    </style>
 </head>
 <body>
-    <h1>Login</h1>
-    <form method="POST">
-        <label for="username">Username:</label>
-        <input type="text" name="username" required>
-        <label for="password">Password:</label>
-        <input type="password" name="password" required>
-        <button type="submit">Login</button>
-    </form>
+    <div class="login-container">
+        <h1 class="text-center">Login to Sportline Store</h1>
+        <form class="login-form" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <!-- Bootstrap and jQuery scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
